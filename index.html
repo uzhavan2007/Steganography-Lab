@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steganography Lab - Hide Messages in Images</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Animated Interactive Background -->
+    <div class="bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+    <div class="glass-overlay"></div>
+
+    <div class="container">
+        <header>
+            <div class="logo-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="url(#paint0_linear)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 17L12 22L22 17" stroke="url(#paint1_linear)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 12L12 17L22 12" stroke="url(#paint2_linear)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <defs>
+                        <linearGradient id="paint0_linear" x1="2" y1="2" x2="22" y2="12" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#38bdf8"/>
+                            <stop offset="1" stop-color="#818cf8"/>
+                        </linearGradient>
+                        <linearGradient id="paint1_linear" x1="2" y1="17" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#818cf8"/>
+                            <stop offset="1" stop-color="#c084fc"/>
+                        </linearGradient>
+                        <linearGradient id="paint2_linear" x1="2" y1="12" x2="22" y2="17" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#38bdf8"/>
+                            <stop offset="1" stop-color="#c084fc"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+            <h1>Steganography Lab</h1>
+            <p class="subtitle">Securely hide and extract secret text inside image files using advanced LSB techniques.</p>
+        </header>
+
+        <main>
+            <!-- Tabs -->
+            <div class="tabs glass-panel">
+                <button class="tab-btn active" onclick="showTab(event, 'encodeTab')">
+                    <span class="icon">🔒</span> Encode Message
+                </button>
+                <button class="tab-btn" onclick="showTab(event, 'decodeTab')">
+                    <span class="icon">🔓</span> Decode Message
+                </button>
+                <div class="tab-indicator"></div>
+            </div>
+
+            <!-- Encode Tab -->
+            <div id="encodeTab" class="tab-content active">
+                <div class="card glass-panel">
+                    <h2>Encode Secret Message</h2>
+                    <form id="encodeForm">
+                        <div class="form-group file-upload-group">
+                            <label for="encodeImage">Upload Target Image</label>
+                            <div class="file-upload-wrapper">
+                                <input type="file" id="encodeImage" accept="image/png, image/jpeg" required>
+                                <div class="file-upload-display">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                                    <span id="encodeFileName">Choose an image (PNG/JPG)...</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="secretMessage">Secret Message</label>
+                            <textarea id="secretMessage" rows="4" placeholder="Enter the text you want to hide..." required></textarea>
+                            <div class="focus-border"></div>
+                        </div>
+                        <button type="submit" class="btn primary-btn glow-effect">
+                            <span>Encode & Download</span>
+                            <div class="btn-glow"></div>
+                        </button>
+                    </form>
+                    <div id="encodeResult" class="result"></div>
+                </div>
+            </div>
+
+            <!-- Decode Tab -->
+            <div id="decodeTab" class="tab-content">
+                <div class="card glass-panel">
+                    <h2>Decode Hidden Message</h2>
+                    <form id="decodeForm">
+                        <div class="form-group file-upload-group">
+                            <label for="decodeImage">Upload Stego Image</label>
+                            <div class="file-upload-wrapper">
+                                <input type="file" id="decodeImage" accept="image/png, image/jpeg" required>
+                                <div class="file-upload-display">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                                    <span id="decodeFileName">Choose a stego image (PNG/JPG)...</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn secondary-btn glow-effect">
+                            <span>Extract Message</span>
+                            <div class="btn-glow"></div>
+                        </button>
+                    </form>
+                    <div id="decodeResult" class="result hidden">
+                        <h3>Extracted Message</h3>
+                        <div class="message-box" id="extractedMessage"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
